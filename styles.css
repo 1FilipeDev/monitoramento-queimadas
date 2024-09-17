@@ -1,0 +1,176 @@
+/* Estilo geral */
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+header {
+  background-color: #f44336;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between; /* Mantém o logo à esquerda e o login à direita */
+}
+
+.site-logo {
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.site-logo:hover {
+  text-decoration: underline;
+}
+
+#admin-login a {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+#admin-login a:hover {
+  text-decoration: underline;
+}
+
+/* Centralização e estilo das telas de login, registrar, e recuperação de senha */
+.center-container {
+  width: 300px;
+  margin: 100px auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.center-container h1 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.center-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.center-container label {
+  text-align: left;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #555;
+}
+
+.center-container input {
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.center-container a {
+  color: #007aff;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.center-container a:hover {
+  text-decoration: underline;
+}
+
+/* Botões arredondados */
+.rounded-button {
+  padding: 10px;
+  background-color: #f44336; /* Mesma cor do cabeçalho */
+  color: white; /* Texto branco */
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.rounded-button:hover {
+  background-color: #d7322b;
+}
+
+/* Botão de voltar à página principal com a mesma cor */
+.back-button {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f44336; /* Agora com a mesma cor do cabeçalho */
+  color: white; /* Texto branco */
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.back-button:hover {
+  background-color: #d7322b;
+}
+
+/* Mapa */
+#map {
+  height: 500px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Botões pequenos */
+.small-button {
+  padding: 5px 10px;
+  font-size: 12px;
+  margin-left: 10px;
+  background-color: #f44336; /* Mesma cor do cabeçalho */
+  color: white; /* Texto branco */
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.small-button:hover {
+  background-color: #d7322b;
+}
+/* Popup personalizado para os marcadores */
+.leaflet-popup-content-wrapper {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  color: #333;
+}
+
+.leaflet-popup-content {
+  margin: 10px;
+  font-size: 14px;
+}
+
+.leaflet-popup-tip {
+  background: white;
+}
+/* Estilo do Rodapé */
+footer {
+  background-color: #f44336; /* Mesma cor do cabeçalho */
+  padding: 20px 0;
+  text-align: center;
+  font-size: 14px;
+  color: white; /* Texto branco */
+  margin-top: 50px;
+  border-top: 1px solid #eaeaea;
+}
+
+.footer-content p {
+  margin: 5px 0;
+}
+
+.footer-links a {
+  color: white; /* Texto branco */
+  text-decoration: none;
+  margin: 0 15px;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}

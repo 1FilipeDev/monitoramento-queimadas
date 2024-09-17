@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monitoramento de Queimadas</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+  
+  <!-- Adicionando a API de Geocodificação do Google Maps -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=SUA_API_KEY"></script>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="site-logo">Monitoramento de Queimadas</a> <!-- Nome do site como logo clicável -->
+    <!-- Login de administrador no canto superior direito -->
+    <div id="admin-login">
+      <a href="login.html">Login</a>
+    </div>
+  </header>
+
+  <!-- Mapa -->
+  <div id="map" style="height: 500px; width: 100%; margin-top: 20px;"></div>
+
+  <main>
+    <div class="tab">
+      <button class="tablinks active" onclick="openTab(event, 'ReportFire')">Reporte Queimada</button>
+      <button class="tablinks" onclick="openTab(event, 'ReportNeighbor')">Denunciar Vizinho</button>
+    </div>
+
+    <!-- Conteúdo da Aba Reporte de Queimada -->
+    <div id="ReportFire" class="tabcontent" style="display: block;">
+      <form id="reportForm">
+        <h2>Reporte uma Queimada</h2>
+
+        <!-- Campo de localização com botão pequeno -->
+        <label for="location">Localização:</label>
+        <input type="text" id="location" name="location" required placeholder="Digite ou use a localização atual">
+        <button type="button" id="useLocation" class="small-button">Minha Localização</button>
+
+        <!-- Nível da queimada -->
+        <label for="level">Nível da Queimada:</label>
+        <select id="level" name="level" required>
+          <option value="1">Baixo</option>
+          <option value="2">Médio</option>
+          <option value="3">Alto</option>
+        </select>
+
+        <!-- Categorização da Queimada -->
+        <label for="category">Tipo de Local:</label>
+        <select id="category" name="category" required onchange="handleCategoryChange()">
+          <option value="lote">Lote</option>
+          <option value="mata">Mata</option>
+          <option value="casa">Casa</option>
+          <option value="outros">Outras</option>
+        </select>
+
+        <!-- Caixa de texto para outras categorias -->
+        <div id="otherCategoryContainer" style="display:none;">
+          <label for="otherCategory">Descreva o tipo de local:</label>
+          <input type="text" id="otherCategory" name="otherCategory" placeholder="Especifique o local...">
+        </div>
+
+        <!-- Anexar foto -->
+        <label for="photo">Anexar Foto:</label>
+        <input type="file" id="photo" name="photo" accept="image/*">
+
+        <!-- Campo para informações adicionais -->
+        <label for="additionalInfo">Informações Adicionais:</label>
+        <input type="text" id="additionalInfo" name="additionalInfo" placeholder="Descreva a queimada...">
+
+        <!-- Botão para enviar o relatório -->
+        <button type="submit" class="rounded-button">Enviar Relatório</button>
+      </form>
+    </div>
+
+    <!-- Conteúdo da Aba Denunciar Vizinho -->
+    <div id="ReportNeighbor" class="tabcontent" style="display:none;">
+      <h2>Denunciar Vizinho</h2>
+      <form id="neighborForm">
+        <label for="neighborDescription">Descreva a Situação:</label>
+        <textarea id="neighborDescription" name="neighborDescription" rows="4" placeholder="Informe os detalhes sobre o vizinho e a situação..."></textarea>
+
+        <!-- Anexar foto para comprovação -->
+        <label for="neighborPhoto">Anexar Foto:</label>
+        <input type="file" id="neighborPhoto" name="neighborPhoto" accept="image/*">
+
+        <button type="submit" class="rounded-button">Enviar Denúncia</button>
+      </form>
+    </div>
+    
+    <!-- Botão para acessar os relatórios (acesso restrito) -->
+    <button type="button" id="viewReports" class="rounded-button">Ver Relatórios (Autorizados)</button>
+  </main>
+
+  <!-- Rodapé -->
+  <footer>
+    <div class="footer-content">
+      <p>© 2024 INOVATEC. Todos os direitos reservados.</p>
+      <p>Projeto por Filipe - Monitoramento de Queimadas.</p>
+      <nav class="footer-links">
+        <a href="index.html">Início</a>
+        <a href="login.html">Login</a>
+        <a href="create_account.html">Criar Conta</a>
+        <a href="forgot_password.html">Recuperar Senha</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- JavaScript externo -->
+  <script src="scripts.js"></script>
+
+  <script>
+    // Função para alternar entre abas
+    function openTab(evt, tabName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(tabName).style.display = "block";
+      evt.currentTarget.className += " active";
+    }
+
+    // Função para mostrar/esconder o campo "Outras" na categorização
+    function handleCategoryChange() {
+      const category = document.getElementById('category').value;
+      const otherCategoryContainer = document.getElementById('otherCategoryContainer');
+
+      if (category === 'outros') {
+        otherCategoryContainer.style.display = 'block';
+      } else {
+        otherCategoryContainer.style.display = 'none';
+      }
+    }
+  </script>
+
+</body>
+</html>
