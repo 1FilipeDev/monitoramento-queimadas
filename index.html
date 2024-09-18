@@ -8,6 +8,26 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+ <!-- Adicionar o Firebase SDK para Web -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-analytics.js"></script>
+
+  <script>
+    // Configuração do Firebase (suas credenciais)
+    const firebaseConfig = {
+      apiKey: "AIzaSyABYr_9dFwY6D2X_PEnlSS3EOs9wzQsUtU",
+      authDomain: "controle-queimadas.firebaseapp.com",
+      projectId: "controle-queimadas",
+      storageBucket: "controle-queimadas.appspot.com",
+      messagingSenderId: "218355517577",
+      appId: "1:218355517577:web:25ac8414343b3e46c5de58",
+      measurementId: "G-1V22N2KB7K"
+    };
+
+    // Inicializar Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
   
   <!-- Adicionando a API de Geocodificação do Google Maps -->
   <script src="https://maps.googleapis.com/maps/api/js?key=SUA_API_KEY"></script>
