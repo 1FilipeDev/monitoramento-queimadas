@@ -1,5 +1,5 @@
 // Inicializar o mapa
-var map = L.map('map').setView([-15.7801, -47.9292], 5); // Coordenadas de Brasília, Brasil
+var map = L.map('map').setView([-16.6786, -49.2539], 13);//Coordenadas Goiânia, Goiás
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors'
