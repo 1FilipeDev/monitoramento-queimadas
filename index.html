@@ -8,6 +8,11 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+  
+  <!-- Adicionando a API de Geocodificação do Google Maps -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=SUA_API_KEY"></script>
+</head>
+<body>
 <script type="module">
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
@@ -31,12 +36,6 @@
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
 </script>
-  
-  <!-- Adicionando a API de Geocodificação do Google Maps -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=SUA_API_KEY"></script>
-</head>
-<body>
-
   <header>
     <a href="index.html" class="site-logo">Monitoramento de Queimadas</a> <!-- Nome do site como logo clicável -->
     <!-- Login de administrador no canto superior direito -->
