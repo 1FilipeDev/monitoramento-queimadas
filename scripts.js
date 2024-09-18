@@ -1,5 +1,5 @@
 // Inicializar o mapa
-var map = L.map('map').setView([-16.6786, -49.2539], 13);//Coordenadas Goiânia, Goiás
+var map = L.map('map').setView([-15.7801, -47.9292], 5); // Coordenadas de Brasília, Brasil
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors'
@@ -7,7 +7,6 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 var userCoordinates = null; // Variável para armazenar a localização do usuário
 var marker; // Armazenar o marcador para poder reposicionar
-var isSelectingLocation = false; // Controle para habilitar/desabilitar a seleção no mapa
 
 // Exemplo de dados de queimadas (latitude, longitude, intensidade)
 var heatData = [
@@ -19,11 +18,25 @@ var heatData = [
 // Adicionar a camada de calor ao mapa
 var heat = L.heatLayer(heatData, {radius: 25}).addTo(map);
 
-// Função para permitir marcar no mapa
-document.getElementById('markOnMap').addEventListener('click', function () {
-    isSelectingLocation = true; // Habilitar seleção de localização
-    alert('Clique no mapa para marcar a localização.');
-});
+// Função para centralizar o mapa na localização do usuário ao carregar a página
+function setUserLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            userCoordinates = {lat: lat, lng: lon}; // Armazenar as coordenadas do usuário
+            map.setView([lat, lon], 12); // Centralizar o mapa na localização do usuário
+            L.marker([lat, lon]).addTo(map).bindPopup('Você está aqui!').openPopup();
+        }, function(error) {
+            console.error("Erro ao obter localização: ", error);
+        });
+    } else {
+        alert('Geolocalização não é suportada pelo navegador.');
+    }
+}
+
+// Chamar a função ao carregar a página
+window.onload = setUserLocation;
 
 // Capturar dados do formulário e adicionar marcador colorido
 document.getElementById('reportForm').addEventListener('submit', function(event) {
@@ -31,29 +44,23 @@ document.getElementById('reportForm').addEventListener('submit', function(event)
 
     var location = document.getElementById('location').value;
     var level = document.getElementById('level').value;
-    var category = document.getElementById('category').value;
     var additionalInfo = document.getElementById('additionalInfo').value.split(' ').slice(0, 50).join(' '); // Limitar a 50 palavras
-    var photoInput = document.getElementById('photo'); // Foto anexada
-    var photoFile = photoInput.files.length > 0 ? photoInput.files[0] : null;
 
     // Se o usuário usou a localização atual ou CEP, utilizar as coordenadas armazenadas
     if (userCoordinates) {
-        addMarker(userCoordinates, level, category, additionalInfo, photoFile);
+        addMarker(userCoordinates, level, additionalInfo);
     } else {
         // Fazer a geocodificação do endereço ou CEP inserido
         geocodeLocation(location, function(coordinates) {
-            addMarker(coordinates, level, category, additionalInfo, photoFile);
+            addMarker(coordinates, level, additionalInfo);
         });
     }
 
-    // Desativar a seleção no mapa após o envio do formulário
-    isSelectingLocation = false;
-    document.getElementById('markOnMap').disabled = true; // Desabilitar o botão de marcar no mapa
-    document.getElementById('reportForm').reset(); // Resetar o formulário
+    document.getElementById('reportForm').reset();
 });
 
 // Função para adicionar marcador colorido no mapa
-function addMarker(coordinates, level, category, additionalInfo, photo) {
+function addMarker(coordinates, level, additionalInfo) {
     let markerColor;
     switch (level) {
         case '1':
@@ -71,46 +78,20 @@ function addMarker(coordinates, level, category, additionalInfo, photo) {
         map.removeLayer(marker); // Remove o marcador anterior se existir
     }
 
-    // Criar o conteúdo do popup
-    let popupContent = `
-        <b>Nível:</b> ${level === '1' ? 'Baixo' : level === '2' ? 'Médio' : 'Alto'}<br>
-        <b>Local:</b> ${category}<br>
-        <b>Informações Adicionais:</b> ${additionalInfo || 'Nenhuma'}<br>
-    `;
-
-    // Adicionar a foto, se houver
-    if (photo) {
-        const imageUrl = URL.createObjectURL(photo); // Cria uma URL temporária para a foto
-        popupContent += `<b>Foto:</b><br><img src="${imageUrl}" alt="Foto Anexada" style="max-width: 100px; max-height: 100px;"><br>`;
-    }
-
-    // Adicionar o marcador ao mapa
     marker = L.circleMarker([coordinates.lat, coordinates.lng], {
         color: markerColor,
         radius: 10
-    }).bindPopup(popupContent).addTo(map);
+    }).bindPopup(`<b>Nível:</b> ${level}<br><b>Info:</b> ${additionalInfo}`).addTo(map);
 
     map.setView([coordinates.lat, coordinates.lng], 12);
     heat.addLatLng([coordinates.lat, coordinates.lng, level / 3]);
 
-    // Desativar a seleção manual após o envio do formulário
-    isSelectingLocation = false;
-}
-
-// Evento de clique no mapa para marcar a localização (apenas se estiver habilitado)
-map.on('click', function(e) {
-    if (isSelectingLocation) {
-        if (marker) {
-            marker.setLatLng(e.latlng); // Atualizar o marcador
-        } else {
-            marker = L.circleMarker(e.latlng, {
-                color: 'blue',
-                radius: 10
-            }).addTo(map);
-        }
+    // Permitir ao usuário ajustar manualmente o marcador no mapa
+    map.on('click', function(e) {
+        marker.setLatLng(e.latlng);
         userCoordinates = {lat: e.latlng.lat, lng: e.latlng.lng}; // Atualizar as coordenadas
-    }
-});
+    });
+}
 
 // Função para converter localização (CEP ou endereço) usando a API ViaCEP ou Google Maps
 function geocodeLocation(location, callback) {
