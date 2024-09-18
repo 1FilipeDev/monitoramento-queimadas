@@ -140,3 +140,13 @@ document.getElementById('useLocation').addEventListener('click', function() {
         alert('Geolocalização não é suportada pelo navegador.');
     }
 });
+// Recuperar os dados do Firebase e exibir no mapa
+firebase.database().ref('reports').on('value', function(snapshot) {
+    snapshot.forEach(function(childSnapshot) {
+        var data = childSnapshot.val();
+
+        // Adicionar os dados ao mapa (ajuste para usar a função de geocodificação ou coordenadas diretas)
+        var coordinates = getCoordinatesFromLocation(data.location); // Função fictícia para obter as coordenadas
+        addMarker(coordinates, data.level, data.category, data.additionalInfo, null);
+    });
+});
