@@ -8,170 +8,64 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
-  
-  <!-- Adicionando a API de Geocodificação do Google Maps -->
   <script src="https://maps.googleapis.com/maps/api/js?key=SUA_API_KEY"></script>
 </head>
 <body>
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyABYr_9dFwY6D2X_PEnlSS3EOs9wzQsUtU",
-    authDomain: "controle-queimadas.firebaseapp.com",
-    projectId: "controle-queimadas",
-    storageBucket: "controle-queimadas.appspot.com",
-    messagingSenderId: "218355517577",
-    appId: "1:218355517577:web:edfbe98786e80230c5de58",
-    measurementId: "G-XW6MKC9R6Z"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
+  <!-- Cabeçalho com logo à esquerda e links à direita -->
   <header>
-  <header>
-  <a href="index.html" class="site-logo">Monitoramento de Queimadas</a> <!-- Nome do site como logo -->
-  
-  <!-- Links de navegação no cabeçalho -->
-  <nav class="nav-links">
-    <a href="index.html">Início</a>
-    <a href="login.html">Login</a>
-    <a href="create_account.html">Criar Conta</a>
-    <a href="forgot_password.html">Recuperar Senha</a>
-  </nav>
-</header>
+    <a href="index.html" class="site-logo">Monitoramento de Queimadas</a>
+    <nav class="nav-links">
+      <a href="index.html">Início</a>
+      <a href="login.html">Login</a>
+      <a href="create_account.html">Criar Conta</a>
+      <a href="forgot_password.html">Recuperar Senha</a>
+    </nav>
   </header>
 
-  <!-- Mapa -->
-  <div id="map" style="height: 500px; width: 100%; margin-top: 20px;"></div>
+  <!-- Layout principal com mapa e formulário lado a lado -->
+  <div class="main-content">
+    <!-- Mapa -->
+    <div id="map"></div>
 
-  <main>
-    <div class="tab">
-      <button class="tablinks active" onclick="openTab(event, 'ReportFire')">Reporte Queimada</button>
-      <button class="tablinks" onclick="openTab(event, 'ReportNeighbor')">Denunciar Vizinho</button>
-    </div>
+    <!-- Formulário de reporte -->
+    <form id="reportForm">
+      <h2>Reporte uma Queimada</h2>
+      
+      <label for="location">Localização:</label>
+      <input type="text" id="location" name="location" required placeholder="Digite ou use a localização atual">
+      <button type="button" id="useLocation" class="small-button">Minha Localização</button>
 
-    <!-- Conteúdo da Aba Reporte de Queimada -->
-    <div id="ReportFire" class="tabcontent" style="display: block;">
-      <form id="reportForm">
-        <h2>Reporte uma Queimada</h2>
-        
-<!-- Botão para permitir marcar no mapa -->
-  <button type="button" id="markOnMap" class="small-button">Marcar no Mapa</button>
+      <label for="level">Nível da Queimada:</label>
+      <select id="level" name="level" required>
+        <option value="1">Baixo</option>
+        <option value="2">Médio</option>
+        <option value="3">Alto</option>
+      </select>
 
-        <!-- Campo de localização com botão pequeno -->
-        <label for="location">Localização:</label>
-        <input type="text" id="location" name="location" required placeholder="Digite ou use a localização atual">
-        <button type="button" id="useLocation" class="small-button">Minha Localização</button>
+      <label for="category">Tipo de Local:</label>
+      <select id="category" name="category" required onchange="handleCategoryChange()">
+        <option value="lote">Lote</option>
+        <option value="mata">Mata</option>
+        <option value="casa">Casa</option>
+        <option value="outros">Outras</option>
+      </select>
 
-        <!-- Nível da queimada -->
-        <label for="level">Nível da Queimada:</label>
-        <select id="level" name="level" required>
-          <option value="1">Baixo</option>
-          <option value="2">Médio</option>
-          <option value="3">Alto</option>
-        </select>
+      <div id="otherCategoryContainer" style="display:none;">
+        <label for="otherCategory">Descreva o tipo de local:</label>
+        <input type="text" id="otherCategory" name="otherCategory" placeholder="Especifique o local...">
+      </div>
 
-        <!-- Categorização da Queimada -->
-        <label for="category">Tipo de Local:</label>
-        <select id="category" name="category" required onchange="handleCategoryChange()">
-          <option value="lote">Lote</option>
-          <option value="mata">Mata</option>
-          <option value="casa">Casa</option>
-          <option value="outros">Outras</option>
-        </select>
+      <label for="photo">Anexar Foto:</label>
+      <input type="file" id="photo" name="photo" accept="image/*">
 
-        <!-- Caixa de texto para outras categorias -->
-        <div id="otherCategoryContainer" style="display:none;">
-          <label for="otherCategory">Descreva o tipo de local:</label>
-          <input type="text" id="otherCategory" name="otherCategory" placeholder="Especifique o local...">
-        </div>
+      <label for="additionalInfo">Informações Adicionais:</label>
+      <input type="text" id="additionalInfo" name="additionalInfo" placeholder="Descreva a queimada...">
 
-        <!-- Anexar foto -->
-        <label for="photo">Anexar Foto:</label>
-        <input type="file" id="photo" name="photo" accept="image/*">
+      <button type="submit" class="rounded-button">Enviar Relatório</button>
+    </form>
+  </div>
 
-        <!-- Campo para informações adicionais -->
-        <label for="additionalInfo">Informações Adicionais:</label>
-        <input type="text" id="additionalInfo" name="additionalInfo" placeholder="Descreva a queimada...">
-
-        <!-- Botão para enviar o relatório -->
-        <button type="submit" class="rounded-button">Enviar Relatório</button>
-      </form>
-    </div>
-
-    <!-- Conteúdo da Aba Denunciar Vizinho -->
-    <div id="ReportNeighbor" class="tabcontent" style="display:none;">
-      <h2>Denunciar Vizinho</h2>
-      <form id="neighborForm">
-        <label for="neighborDescription">Descreva a Situação:</label>
-        <textarea id="neighborDescription" name="neighborDescription" rows="4" placeholder="Informe os detalhes sobre o vizinho e a situação..."></textarea>
-
-        <!-- Anexar foto para comprovação -->
-        <label for="neighborPhoto">Anexar Foto:</label>
-        <input type="file" id="neighborPhoto" name="neighborPhoto" accept="image/*">
-
-        <button type="submit" class="rounded-button">Enviar Denúncia</button>
-      </form>
-    </div>
-    
-    <!-- Botão para acessar os relatórios (acesso restrito) -->
-    <button type="button" id="viewReports" class="rounded-button">Ver Relatórios (Autorizados)</button>
-  </main>
-
-  <!-- Rodapé -->
-  <footer>
-    <div class="footer-content">
-      <p>© 2024 INOVATEC. Todos os direitos reservados.</p>
-      <p>Projeto por Filipe - Monitoramento de Queimadas.</p>
-      <nav class="footer-links">
-        <a href="index.html">Início</a>
-        <a href="login.html">Login</a>
-        <a href="create_account.html">Criar Conta</a>
-        <a href="forgot_password.html">Recuperar Senha</a>
-      </nav>
-    </div>
-  </footer>
-
-  <!-- JavaScript externo -->
   <script src="scripts.js"></script>
-
-  <script>
-    // Função para alternar entre abas
-    function openTab(evt, tabName) {
-      var i, tabcontent, tablinks;
-      tabcontent = document.getElementsByClassName("tabcontent");
-      for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-      }
-      tablinks = document.getElementsByClassName("tablinks");
-      for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-      }
-      document.getElementById(tabName).style.display = "block";
-      evt.currentTarget.className += " active";
-    }
-
-    // Função para mostrar/esconder o campo "Outras" na categorização
-    function handleCategoryChange() {
-      const category = document.getElementById('category').value;
-      const otherCategoryContainer = document.getElementById('otherCategoryContainer');
-
-      if (category === 'outros') {
-        otherCategoryContainer.style.display = 'block';
-      } else {
-        otherCategoryContainer.style.display = 'none';
-      }
-    }
-  </script>
-
 </body>
 </html>
