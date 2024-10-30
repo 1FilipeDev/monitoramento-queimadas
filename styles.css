@@ -1,7 +1,7 @@
 /* Cores principais */
 :root {
-  --primary-color: #2e7d32;  /* Verde harmonioso */
-  --secondary-color: #1b5e20; /* Verde escuro para botões */
+  --primary-color: #2e7d32;
+  --secondary-color: #1b5e20;
   --text-color: #ffffff;
   --background-color: #f4f4f4;
 }
@@ -20,7 +20,6 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: var(--text-color);
 }
 
 .site-logo {
@@ -39,30 +38,32 @@ header {
   color: var(--text-color);
   text-decoration: none;
   font-size: 16px;
-  font-weight: 500;
 }
 
 .nav-links a:hover {
   text-decoration: underline;
 }
 
-/* Mapa */
+/* Layout do mapa e formulário */
+.main-content {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
 #map {
-  height: 500px;
-  width: 100%;
-  margin-top: 20px;
+  flex: 7;
+  height: 750px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Formulário de Relatório */
 form {
+  flex: 3;
   background-color: #ffffff;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  margin: 20px auto;
-  max-width: 400px;
 }
 
 form h2 {
@@ -75,86 +76,38 @@ form h2 {
 form label {
   font-weight: bold;
   color: #333;
+  display: block;
+  margin-bottom: 5px;
 }
 
-form input, form select, form textarea {
+form input, form select, form textarea, form button, form .small-button {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
   border-radius: 5px;
   border: 1px solid #ddd;
+  font-size: 14px;
 }
 
-/* Botões */
 button, .small-button {
   background-color: var(--secondary-color);
   color: var(--text-color);
   border: none;
   border-radius: 5px;
-  padding: 10px 15px;
-  font-size: 14px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin: 5px 0;
 }
 
 button:hover, .small-button:hover {
-  background-color: #33691e; /* Verde um pouco mais escuro */
-}
-
-.rounded-button {
-  background-color: var(--secondary-color);
-  color: var(--text-color);
-  padding: 10px;
-  font-size: 14px;
-  border-radius: 5px;
-}
-
-.rounded-button:hover {
   background-color: #33691e;
 }
-
-/* Tabs */
-.tab {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.tab button {
-  background-color: var(--primary-color);
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  color: var(--text-color);
-  cursor: pointer;
-}
-
-.tab button:hover {
-  background-color: #33691e;
-}
-
-.tab button.active {
-  background-color: var(--secondary-color);
-}
-
-/* Rodapé */
-footer {
-  background-color: var(--primary-color);
-  color: var(--text-color);
+/* Centralização e estilo das telas de login, registrar, e recuperação de senha */
+.center-container {
+  width: 300px;
+  margin: 100px auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
-  padding: 20px 0;
-  margin-top: 50px;
-  border-top: 1px solid #eaeaea;
-}
-
-.footer-links a {
-  color: var(--text-color);
-  text-decoration: none;
-  margin: 0 10px;
-}
-
-.footer-links a:hover {
-  text-decoration: underline;
 }
