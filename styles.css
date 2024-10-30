@@ -81,7 +81,7 @@ form label {
 }
 
 form input, form select, form textarea, form button, form .small-button {
-  width: 100%;
+  width: 85%;
   padding: 10px;
   margin-bottom: 15px;
   border-radius: 5px;
