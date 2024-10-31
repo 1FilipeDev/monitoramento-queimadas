@@ -111,3 +111,18 @@ button:hover, .small-button:hover {
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
+/* Footer */
+footer {
+    clear: both;
+    margin-top: 35%;
+    padding: 4px;
+    background-color: #2e7d32;
+    color: #FFF;
+    text-align: center;
+    font-size: 12px;
+}
+
+footer a {
+    color: #2e7d32;
+    text-decoration: none;
+}
